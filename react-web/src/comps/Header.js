@@ -65,7 +65,7 @@ function Header() {
                 textAlign={'right'}
             >   
 
-                <Show breakpoint='(max-width: 580px)'>
+                <Show breakpoint='(max-width: 707px)'>
                 <Button
                     onClick={() => handleClick(size)}
                     key={size}
@@ -105,7 +105,7 @@ function Header() {
                 </Drawer>
                 </Show>
                 
-                <Hide breakpoint='(max-width: 580px)'>
+                <Hide breakpoint='(max-width: 707px)'>
                     {isHome ? (
                         
                         <Box p={3} >
@@ -201,7 +201,6 @@ function Header() {
                         </>
                     )}
                 </Hide>
-
                 
             </Box>
 
