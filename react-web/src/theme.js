@@ -7,7 +7,7 @@ const config = {
   styles: {
     global: {
       body: {
-        bg: 'black',
+        bg: '#010715',
         color: 'white',
       },
     },

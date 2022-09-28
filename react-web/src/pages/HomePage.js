@@ -3,6 +3,7 @@ import Header from "../comps/Header";
 import theme from "../theme";
 
 import Wave1 from  '../assets/wave-2.png'
+import Footer from "../comps/Footer";
 
 function HomePage() {
   return (
@@ -188,6 +189,7 @@ function HomePage() {
           </Box>
 
         </Box>
+        <Footer />
       </Box>
     </ChakraProvider>
   );
