@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ChakraProvider, Text, Link, Badge, Button, Box, Image, ColorModeScript, Show, Drawer, useDisclosure, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, Hide } from '@chakra-ui/react';
+import { ChakraProvider, Text, Link, Badge, Button, Box, Image, ColorModeScript, Show, Drawer, useDisclosure, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, Hide, IconButton } from '@chakra-ui/react';
 import { NavLink, useLocation } from "react-router-dom";
 import Logo from  '../assets/logo-09.png'
 import theme from '../theme';
@@ -66,19 +66,21 @@ function Header() {
             >   
 
                 <Show breakpoint='(max-width: 707px)'>
-                <Button
+                <IconButton
                     onClick={() => handleClick(size)}
                     key={size}
-                    pr={1}
-                    leftIcon={<GiHamburgerMenu />} 
-                    ></Button>
+                    color={'white'}
+                    backgroundColor={'rgba(180, 180, 180, 0.2)'}
+                    icon={<GiHamburgerMenu />} 
+                    mt={1}
+                    ></IconButton>
 
-                <Drawer onClose={onClose} isOpen={isOpen} size={'xs'}>
-                    <DrawerOverlay />
+                <Drawer bgColor={'#010715'} onClose={onClose} isOpen={isOpen} size={'xs'}>
+                    <DrawerOverlay  />
                     <DrawerContent>
                     <DrawerCloseButton />
-                    <DrawerHeader fontSize={50} fontWeight={700}>Menu</DrawerHeader>
-                    <DrawerBody>
+                    <DrawerHeader  bgColor={'#010715'} fontSize={50} fontWeight={700}>Menu</DrawerHeader>
+                    <DrawerBody bgColor={'#010715'}>
                         <NavLink to={'/'}>
                             <Link fontSize={30} fontWeight={700}>
                                 Home

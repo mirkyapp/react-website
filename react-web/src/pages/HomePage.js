@@ -18,9 +18,9 @@ function HomePage() {
               textAlign={'center'}
               bgGradient='radial(#E20D8B, #6459F4,)'
               bgClip='text'
-              size={["xl", "4xl"]}
-              pr={'15'}
-              pl={'15'}
+              size={["2xl", "4xl"]}
+              pr={['0','15']}
+              pl={['0','15']}
               w={'50vw'}
               margin={'auto'}
               lineHeight={'1.2'}
