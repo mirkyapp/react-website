@@ -80,7 +80,7 @@ function HomePage() {
             </Box>
           </Box>
 
-          <Image src={Wave1} />
+          <Image src={Wave1} w={'100vw'}/>
 
           <Box
             textAlign={'center'}
