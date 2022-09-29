@@ -45,8 +45,8 @@ function Footer() {
                 alignSelf={'center'}
                 textAlign={'right'}
             >   
-            <a href='https://twitter.com/' target="_blank">
-                <Icon as={FaTwitter} w={8} h={8} mt={2.5} mr={5} color={'whiteAlpha.700'} />
+            <a href='https://twitter.com/mirkyapp' target="_blank">
+                <Icon as={FaTwitter} w={8} h={8} mt={2.5} mr={5} color={'whiteAlpha.700'} _hover={{ color:'gray.900' }} />
             </a>
 
             <a href='https://instagram.com/' target="_blank">
@@ -110,8 +110,8 @@ function Footer() {
                 alignSelf={'center'}
                 textAlign={'center'}
             >   
-            <a href='https://twitter.com/' target="_blank">
-                <Icon as={FaTwitter} w={8} h={8} mt={2.5} mr={5} color={'whiteAlpha.700'} />
+            <a href='https://twitter.com/mirkyapp' target="_blank">
+                <Icon as={FaTwitter} w={8} h={8} mt={2.5} mr={5} color={'whiteAlpha.700'} _hover={{ color:'gray.900' }} />
             </a>
 
             <a href='https://instagram.com/' target="_blank">
