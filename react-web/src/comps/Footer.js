@@ -46,23 +46,23 @@ function Footer() {
                 textAlign={'right'}
             >   
             <a href='https://twitter.com/mirkyapp' target="_blank">
-                <Icon as={FaTwitter} w={8} h={8} mt={2.5} mr={5} color={'whiteAlpha.700'} _hover={{ color:'gray.900' }} />
+                <Icon as={FaTwitter} w={8} h={8} mt={2.5} mr={5} color={'whiteAlpha.700'} _hover={{ color:'gray.600' }} />
             </a>
 
             <a href='https://instagram.com/' target="_blank">
-                <Icon as={FaInstagram} w={8} h={8} mt={2.5} mr={5} color={'whiteAlpha.700'} />
+                <Icon as={FaInstagram} w={8} h={8} mt={2.5} mr={5} color={'whiteAlpha.700'} _hover={{ color:'gray.600' }} />
             </a>
 
             <a href='https://tiktok.com/' target="_blank">
-                <Icon as={FaTiktok} w={8} h={8} mt={2.5} mr={5} color={'whiteAlpha.700'} />
+                <Icon as={FaTiktok} w={8} h={8} mt={2.5} mr={5} color={'whiteAlpha.700'} _hover={{ color:'gray.600' }} />
             </a>
 
             <a href='https://discord.gg/' target="_blank">
-                <Icon as={FaDiscord} w={8} h={8} mt={2.5} mr={5} color={'whiteAlpha.700'} />
+                <Icon as={FaDiscord} w={8} h={8} mt={2.5} mr={5} color={'whiteAlpha.700'} _hover={{ color:'gray.600' }} />
             </a>
 
             <a href='mailto: hello@mirky.app' target="_blank">
-                <Icon as={MdMail} w={8} h={8} mt={2.5} mr={5} color={'whiteAlpha.700'} />
+                <Icon as={MdMail} w={8} h={8} mt={2.5} mr={5} color={'whiteAlpha.700'} _hover={{ color:'gray.600' }} />
             </a>
             </Box>
 
@@ -111,23 +111,23 @@ function Footer() {
                 textAlign={'center'}
             >   
             <a href='https://twitter.com/mirkyapp' target="_blank">
-                <Icon as={FaTwitter} w={8} h={8} mt={2.5} mr={5} color={'whiteAlpha.700'} _hover={{ color:'gray.900' }} />
+                <Icon as={FaTwitter} w={8} h={8} mt={2.5} mr={5} color={'whiteAlpha.700'} _hover={{ color:'gray.600' }} />
             </a>
 
             <a href='https://instagram.com/' target="_blank">
-                <Icon as={FaInstagram} w={8} h={8} mt={2.5} mr={5} color={'whiteAlpha.700'} />
+                <Icon as={FaInstagram} w={8} h={8} mt={2.5} mr={5} color={'whiteAlpha.700'} _hover={{ color:'gray.600' }} />
             </a>
 
             <a href='https://tiktok.com/' target="_blank">
-                <Icon as={FaTiktok} w={8} h={8} mt={2.5} mr={5} color={'whiteAlpha.700'} />
+                <Icon as={FaTiktok} w={8} h={8} mt={2.5} mr={5} color={'whiteAlpha.700'} _hover={{ color:'gray.600' }} />
             </a>
 
             <a href='https://discord.gg/' target="_blank">
-                <Icon as={FaDiscord} w={8} h={8} mt={2.5} mr={5} color={'whiteAlpha.700'} />
+                <Icon as={FaDiscord} w={8} h={8} mt={2.5} mr={5} color={'whiteAlpha.700'} _hover={{ color:'gray.600' }} />
             </a>
 
             <a href='mailto: hello@mirky.app' target="_blank">
-                <Icon as={MdMail} w={8} h={8} mt={2.5} mr={5} color={'whiteAlpha.700'} />
+                <Icon as={MdMail} w={8} h={8} mt={2.5} mr={5} color={'whiteAlpha.700'} _hover={{ color:'gray.600' }} />
             </a>
             </Box>
 
