@@ -5,12 +5,15 @@ import Logo from  '../assets/logo-09.png'
 import theme from '../theme';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 import { GiHamburger, GiHamburgerMenu } from 'react-icons/gi';
+import Cookies from 'universal-cookie';
 
 
 function Header() {
-
+    const cookies = new Cookies();
     const [size, setSize] = React.useState('')
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const [ isLoggedIn, setIsLoggedIn ] = React.useState(false)
+    
 
     const handleClick = () => {
         onOpen()
@@ -19,24 +22,33 @@ function Header() {
     const location = useLocation();
 
     const [isHome, setIsHome] = React.useState(false)
-    const [isAbout, setIsAbout] = React.useState(false)
+    const [isDocs, setIsDocs] = React.useState(false)
     const [isApp, setIsApp] = React.useState(false)
 
     React.useEffect(() => {
         if (location.pathname === '/') {
             setIsHome(true)
-            setIsAbout(false)
+            setIsDocs(false)
             setIsApp(false)
         } else if (location.pathname === '/about') {
             setIsHome(false)
-            setIsAbout(true)
+            setIsDocs(true)
             setIsApp(false)
         } else if (location.pathname === '/app') {
             setIsHome(false)
-            setIsAbout(false)
+            setIsDocs(false)
             setIsApp(true)
         }
     }, [location])
+
+    React.useEffect(() => {
+        const anon = cookies.get('mirky-anon-session-id')
+        if (anon === undefined) {
+            setIsLoggedIn(false)
+        } else {
+            setIsLoggedIn(true)
+        }
+    }, [])
 
   return (
     <ChakraProvider backgroundColor={'#1A202C'} justifyContent={'center'} theme={theme}>
@@ -137,70 +149,103 @@ function Header() {
 
                         </Box>
 
-                    ) : isAbout ? (
-                        <>
-                        <NavLink to={'/'}>
-                            <Link mr={2} p={3} color={'white'} _hover={{ color: "purple.300", backgroundColor: 'whiteAlpha.100', borderRadius: 10}}>
-                                Home
-                            </Link>
-                        </NavLink>
+                    ) : isDocs ? (
+                        <Box p={3} >
+                            <NavLink to={'/home'}>
+                                <Link mr={4} p={3} color={'white'} _hover={{ color: "brandBlurple.300", backgroundColor: 'whiteAlpha.100', borderRadius: 10}}>
+                                    Home
+                                </Link>
+                            </NavLink>
 
-                        {/* <NavLink to={'/about'}>
-                            <Link mr={2} p={3} color={'white'} borderRadius={10} backgroundColor={'purple.700'} fontWeight={800} _hover={{textDecoration:"none"}}>
-                                About
-                            </Link>
-                        </NavLink>
+                            <NavLink to={'/docs'}>
+                                <Link p={3} color={'white'} mr={4} borderRadius={10} bgGradient={'linear(to-r, brandBlue.500, brandPink.500)'} fontWeight={800} _hover={{textDecoration:"none"}}>
+                                    Docs
+                                </Link>
+                            </NavLink>
 
-                        <NavLink to={'/app'}>
-                            <Link mr={2} p={3} color={'white'} _hover={{ color: "purple.300", backgroundColor: 'whiteAlpha.100', borderRadius: 10}}>
-                                App
-                            </Link>
-                        </NavLink> */}
-                        </>
+                            <NavLink to={'/about'}>
+                                <Link mr={4} p={3} color={'white'} _hover={{ color: "brandBlurple.300", backgroundColor: 'whiteAlpha.100', borderRadius: 10}}>
+                                    Why mirky?
+                                </Link>
+                            </NavLink>
+
+                            <NavLink to={'/signup'}>
+                                <Link p={3} color={'white'} mr={2} borderRadius={10} bgColor={'brandBlurple.500'} fontWeight={800} _hover={{backgroundColor: "brandBlurple.700"}}>
+                                    {isLoggedIn ? (
+                                        'Get Started'
+                                    ) : (
+                                        'Dashboard'
+                                    )}
+                                </Link>
+                            </NavLink>
+
+                        </Box>
 
                     ) : isApp ? (
 
-                        <>
-                        <NavLink to={'/'}>
-                            <Link mr={2} p={3} color={'white'} _hover={{ color: "purple.300", backgroundColor: 'whiteAlpha.100', borderRadius: 10}}>
-                                Home
-                            </Link>
-                        </NavLink>
+                        <Box p={3} >
+                            <NavLink to={'/'}>
+                                <Link mr={4} p={3} color={'white'} _hover={{ color: "brandBlurple.300", backgroundColor: 'whiteAlpha.100', borderRadius: 10}}>
+                                    Home
+                                </Link>
+                            </NavLink>
 
-                        {/* <NavLink to={'/about'}>
-                            <Link mr={2} p={3}  color={'white'} _hover={{ color: "purple.300", backgroundColor: 'whiteAlpha.100', borderRadius: 10}}>
-                                About
-                            </Link>
-                        </NavLink>
+                            <NavLink to={'/docs'}>
+                                <Link mr={4} p={3} color={'white'} _hover={{ color: "brandBlurple.300", backgroundColor: 'whiteAlpha.100', borderRadius: 10}}>
+                                    Docs
+                                </Link>
+                            </NavLink>
 
-                        <NavLink to={'/app'}>
-                            <Link mr={2} p={3} color={'white'} borderRadius={10} backgroundColor={'purple.700'} fontWeight={800} _hover={{textDecoration:"none"}}>
-                                App
-                            </Link>
-                        </NavLink> */}
-                        </>
+                            <NavLink to={'/about'}>
+                                <Link p={3} color={'white'} mr={4} borderRadius={10} bgGradient={'linear(to-r, brandBlue.500, brandPink.500)'} fontWeight={800} _hover={{textDecoration:"none"}}>
+                                    Why Mirky?
+                                </Link>
+                            </NavLink>
+
+                            <NavLink to={'/signup'}>
+                                <Link p={3} color={'white'} mr={2} borderRadius={10} bgColor={'brandBlurple.500'} fontWeight={800} _hover={{backgroundColor: "brandBlurple.700"}}>
+                                    {isLoggedIn ? (
+                                        'Get Started'
+                                    ) : (
+                                        'Dashboard'
+                                    )}
+                                </Link>
+                            </NavLink>
+
+                        </Box>
 
                     ) : (
 
-                        <>
-                        <NavLink to={'/'}>
-                            <Link mr={2} p={3} _hover={{ color: "purple.300", backgroundColor: 'whiteAlpha.100', borderRadius: 10}}>
-                                Home
-                            </Link>
-                        </NavLink>
+                        <Box p={3} >
+                            <NavLink to={'/'}>
+                                <Link mr={4} p={3} color={'white'} _hover={{ color: "brandBlurple.300", backgroundColor: 'whiteAlpha.100', borderRadius: 10}}>
+                                    Home
+                                </Link>
+                            </NavLink>
 
-                        {/* <NavLink to={'/about'}>
-                            <Link mr={2} p={3} _hover={{ color: "purple.300", backgroundColor: 'whiteAlpha.100', borderRadius: 10}}>
-                                About
-                            </Link>
-                        </NavLink>
+                            <NavLink to={'/docs'}>
+                                <Link mr={4} p={3} color={'white'} _hover={{ color: "brandBlurple.300", backgroundColor: 'whiteAlpha.100', borderRadius: 10}}>
+                                    Docs
+                                </Link>
+                            </NavLink>
 
-                        <NavLink to={'/app'}>
-                            <Link mr={2} p={3} _hover={{ color: "purple.300", backgroundColor: 'whiteAlpha.100', borderRadius: 10}}>
-                                App
-                            </Link>
-                        </NavLink> */}
-                        </>
+                            <NavLink to={'/about'}>
+                                <Link mr={4} p={3} color={'white'} _hover={{ color: "brandBlurple.300", backgroundColor: 'whiteAlpha.100', borderRadius: 10}}>
+                                    Why mirky?
+                                </Link>
+                            </NavLink>
+
+                            <NavLink to={'/signup'}>
+                                <Link p={3} color={'white'} mr={2} borderRadius={10} bgColor={'brandBlurple.500'} fontWeight={800} _hover={{backgroundColor: "brandBlurple.700"}}>
+                                    {isLoggedIn ? (
+                                        'Get Started'
+                                    ) : (
+                                        'Dashboard'
+                                    )}
+                                </Link>
+                            </NavLink>
+
+                        </Box>
                     )}
                 </Hide>
                 

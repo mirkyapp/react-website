@@ -27,7 +27,9 @@ function Footer() {
         p={'1.5rem'}
         pb={'3rem'}
         bottom={'0px'}
-        position={'relative'}
+        position={'absolute'}
+        right={'0px'}
+        left={'0px'}
         height={'fit-content'}
         backgroundColor={'rgba(180, 180, 180, 0.2)'}
         backdropFilter={'blur(10px)'}
@@ -100,8 +102,11 @@ function Footer() {
         boxShadow={'rgba(28, 28, 28, 0.2) 0px 0px 10px'}
         borderRadius={'13px'}
         textAlign={'center'}
-        alignContent={'center'}
-        justifyContent={'center'}
+        position={'absolute'}
+        bottom={'0px'}
+        right={'0px'}
+        left={'0px'}
+        margin={'auto'}
         pt={'2.5rem'}
         >
             <Box
@@ -109,6 +114,7 @@ function Footer() {
                 alignItems={'flex-end'}
                 alignSelf={'center'}
                 textAlign={'center'}
+                
             >   
             <a href='https://twitter.com/mirkyapp' target="_blank">
                 <Icon as={FaTwitter} w={8} h={8} mt={2.5} mr={5} color={'whiteAlpha.700'} _hover={{ color:'gray.600' }} />
