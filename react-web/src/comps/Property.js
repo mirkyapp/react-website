@@ -2,6 +2,7 @@ import React from 'react';
 import { useColorMode, useColorModeValue, Box, Text, ChakraProvider, transition } from '@chakra-ui/react';
 import { FaMoon, FaSun } from 'react-icons/fa';
 import theme from '../theme';
+import logo from '../assets/app-icon-07.png';
 
 export const Property = props => {
 
@@ -16,7 +17,7 @@ export const Property = props => {
             alignItems={'center'}
             textAlign={'center'}
             display={'flex'}
-            bgImage={props.image}
+            bgImage={props.image || logo}
             bgSize={'cover'}
             bgPosition={'center'}
             bgClip={'border-box'}
