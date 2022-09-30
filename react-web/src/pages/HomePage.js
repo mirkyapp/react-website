@@ -4,6 +4,7 @@ import theme from "../theme";
 
 import Wave1 from  '../assets/wave-2.png'
 import Footer from "../comps/Footer";
+import { NavLink } from "react-router-dom";
 
 function HomePage() {
   return (
@@ -49,32 +50,36 @@ function HomePage() {
               mb={10}
               flexDir={{ base: 'column', md: 'row' }}
             >
-              <Button
-                mt={50}
-                colorScheme={"brandPurple"}
-                size={'lg'}
-                fontWeight={'bold'}
-                fontSize={'3xl'}
-                p={8}
-                mr={5}
-                ml={5}
-              >
-                Get Started
-              </Button>
+              <NavLink to='/signup'>
+                <Button
+                  mt={50}
+                  colorScheme={"brandPurple"}
+                  size={'lg'}
+                  fontWeight={'bold'}
+                  fontSize={'3xl'}
+                  p={8}
+                  mr={5}
+                  ml={5}
+                >
+                  Get Started
+                </Button>
+              </NavLink>
 
-              <Button
-                mt={50}
-                colorScheme={"brandPurple"}
-                size={'lg'}
-                variant='outline'
-                fontWeight={'bold'}
-                fontSize={'3xl'}
-                ml={5}
-                mr={5}
-                p={8}
-              >
-                Learn More
-              </Button>
+              <NavLink to='/about'>
+                <Button
+                  mt={50}
+                  colorScheme={"brandPurple"}
+                  size={'lg'}
+                  variant='outline'
+                  fontWeight={'bold'}
+                  fontSize={'3xl'}
+                  ml={5}
+                  mr={5}
+                  p={8}
+                >
+                  Learn More
+                </Button>
+              </NavLink>
 
               
             </Box>
@@ -187,6 +192,7 @@ function HomePage() {
             </Box>
 
           </Box>
+          <Box h={10}></Box>
 
         </Box>
         <Footer />

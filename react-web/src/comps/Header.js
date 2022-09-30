@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ChakraProvider, Text, Link, Badge, Button, Box, Image, ColorModeScript, Show, Drawer, useDisclosure, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, Hide, IconButton } from '@chakra-ui/react';
+import { ChakraProvider, Text, Link, Badge, Button, Box, Image, ColorModeScript, Show, Drawer, useDisclosure, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, Hide, IconButton, Tag } from '@chakra-ui/react';
 import { NavLink, useLocation } from "react-router-dom";
 import Logo from  '../assets/logo-09.png'
 import theme from '../theme';
@@ -77,7 +77,7 @@ function Header() {
                 textAlign={'right'}
             >   
 
-                <Show breakpoint='(max-width: 707px)'>
+                <Show breakpoint='(max-width: 750px)'>
                 <IconButton
                     onClick={() => handleClick(size)}
                     key={size}
@@ -119,7 +119,7 @@ function Header() {
                 </Drawer>
                 </Show>
                 
-                <Hide breakpoint='(max-width: 707px)'>
+                <Hide breakpoint='(max-width: 750px)'>
                     {isHome ? (
                         
                         <Box p={3} >
@@ -143,7 +143,11 @@ function Header() {
 
                             <NavLink to={'/signup'}>
                                 <Link p={3} color={'white'} mr={2} borderRadius={10} bgColor={'brandBlurple.500'} fontWeight={800} _hover={{backgroundColor: "brandBlurple.700"}}>
-                                    Get Started
+                                    {isLoggedIn ? (
+                                        'Get Started'
+                                    ) : (
+                                        'Dashboard'
+                                    )}
                                 </Link>
                             </NavLink>
 
@@ -261,7 +265,7 @@ function Header() {
                 flexDirection={'row'}
             >
 
-                <Show breakpoint='(max-width: 380px)'>
+                <Show breakpoint='(max-width: 330px)'>
                     <NavLink to={'/'}>
                         <Link>
                             <a>
@@ -271,7 +275,7 @@ function Header() {
                     </NavLink>
                 </Show>
 
-                <Hide breakpoint='(max-width: 380px)'>
+                <Hide breakpoint='(max-width: 330px)'>
 
                 <NavLink to={'/'}>
                     <Link>
@@ -282,6 +286,9 @@ function Header() {
                 </NavLink>
 
                 <Text fontSize={25} ml={"90px"} mr={2} fontWeight={800} mt={'-2'}>mirky</Text>
+                <Badge variant='solid' colorScheme='brandBlue' mt={-1}>
+                    Beta
+                </Badge>
                 </Hide>
             </Box>
       </Box>
