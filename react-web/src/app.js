@@ -10,6 +10,7 @@ import SignupPage from './pages/SignupPage';
 import LoginPage from './pages/LoginPage';
 import PropertiesPage from './pages/PropertiesPage';
 import AddPropertyPage from './pages/CreatePropertyPage';
+import AccountPage from './pages/AccountPage';
 
 export default function App() {
     const cookies = new Cookies();
@@ -17,21 +18,21 @@ export default function App() {
     const text = useColorModeValue('dark', 'light');
     
     React.useEffect(() => {
-        console.log(text)
         if (text === 'dark') {
             toggleColorMode()
         }
-        const sessionId = cookies.get('mirky-session-id')
-        if (sessionId === undefined) {
+        const session = cookies.get('mirky-session');
+        const anonSession = cookies.get('mirky-anon-session');
+        if (anonSession === undefined && session === undefined) {
             // make a post request to the api to create a new session
             // and set the cookie
-            const req = axios.post('https://api.mirky.app/v1/auth/anonSession', {
+            axios.post('https://api.mirky.app/v1/auth/anon-session', {
                 headers: {
                     'Content-Type': 'application/json'
                 },
             })
             .then(res => {
-                cookies.set('mirky-anon-session-id', res.data.sessionId, { path: '/' })
+                cookies.set('mirky-anon-session', res.data.sessionData, { path: '/' });
             }
         )}
     });
@@ -45,6 +46,7 @@ export default function App() {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/properties" element={<PropertiesPage />} />
                 <Route path="/add-property" element={<AddPropertyPage />} />
+                <Route path="/account" element={<AccountPage />} />
 
             </Routes>
         </BrowserRouter>

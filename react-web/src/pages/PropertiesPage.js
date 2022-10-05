@@ -9,24 +9,26 @@ import { Property } from "../comps/Property";
 import Header from "../comps/Header";
 import { AddProperty } from "../comps/AddProperty";
 import Footer from "../comps/Footer";
+import { Buffer } from 'buffer';
 
 function PropertiesPage() {
 
     const cookies = new Cookies();
-    const [sessionId, setSessionId] = React.useState(cookies.get('mirky-session-id'));
+    const [session, setSession] = React.useState(cookies.get('mirky-session'));
     const [properties, setProperties] = React.useState([]);
     const toast = useToast()
 
     React.useEffect(() => {
-        if (sessionId !== undefined) {
+        if (session !== undefined) {
             console.log('User is logged in')
         } else {
-            console.log('User is not logged in')
             window.location.href = '/login'
         }
 
-        const req = axios.post('https://api.mirky.app/v1/property/fetch-users-props', {
-            sessionId: sessionId
+        axios.get(`https://api.mirky.app/v1/property/fetch-users-props/${session.id}`, {
+            headers: {
+                "Authorization": "Basic " + Buffer.from(session.id + ":" + session.password).toString('base64'),
+            }
         })
             .then(res => {
                 setProperties(res.data.properties)
@@ -36,7 +38,7 @@ function PropertiesPage() {
                 console.log(err)
             }
             )
-    }, [sessionId]);
+    }, [session]);
 
   return (
     <ChakraProvider theme={theme}>

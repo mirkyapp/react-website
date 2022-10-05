@@ -6,6 +6,7 @@ import React from "react";
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 import { NavLink } from "react-router-dom";
+import { Buffer } from 'buffer';
 
 function LoginPage() {
 
@@ -14,11 +15,11 @@ function LoginPage() {
     const [usernameChecking, setUsernameChecking] = React.useState(false);
     const [usernameAvailable, setUsernameAvailable] = React.useState(false);
     const [password, setPassword] = React.useState("");
-    const [sessionId, setSessionId] = React.useState(cookies.get('mirky-anon-session-id'));
+    const [session, setSession] = React.useState(cookies.get('mirky-anon-session'));
     const toast = useToast()
 
     React.useEffect(() => {
-        if (sessionId === undefined) {
+        if (session === undefined) {
             window.location.href = '/properties'
         }
     });
@@ -84,16 +85,23 @@ function LoginPage() {
                             initialValues={{ email: null, password: null, }}
                             onSubmit={(values, actions) => {
                                 setTimeout(() => {
+                                    console.log(session.id)
+                                    console.log(session.password)
                                     
                                     axios.post('https://api.mirky.app/v1/auth/login', {
-                                        email: values.email,
-                                        password: values.password,
-                                        sessionId: sessionId
+                                            email: values.email,
+                                            password: values.password
+                                        }, {
+
+                                            headers: {
+                                                "Authorization": "Basic " + Buffer.from(session.id + ":" + session.password).toString('base64'),
+                                            }
+                                        
                                     }).then(res => {
                                         let data = res.data
                                         if (data.message === "User logged in, session replaced") {
-                                            cookies.remove('mirky-anon-session-id')
-                                            cookies.set('mirky-session-id', data.sessionId, { path: '/' })
+                                            cookies.remove('mirky-anon-session')
+                                            cookies.set('mirky-session', data.session, { path: '/' })
 
                                             toast({
                                                 title: "Logged in.",

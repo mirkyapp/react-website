@@ -6,17 +6,18 @@ import React from "react";
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 import { NavLink } from "react-router-dom";
+import { Buffer } from 'buffer';
 
 function CreatePropertyPage() {
 
     const cookies = new Cookies();
-    const [sessionId, setSessionId] = React.useState(cookies.get('mirky-anon-session-id'));
+    const [session, setSession] = React.useState(cookies.get('mirky-session'));
     const toast = useToast()
     const [value, setValue] = React.useState("");
 
     React.useEffect(() => {
-        if (sessionId === undefined) {
-            //
+        if (session === undefined) {
+            window.location.href = '/login'
         }
     });
 
@@ -128,7 +129,10 @@ function CreatePropertyPage() {
                                         website: values.website,
                                         industry: values.industry,
                                         companySize: values.companySize,
-                                        sessionId: cookies.get('mirky-session-id')
+                                    }, {
+                                        headers: {
+                                            "Authorization": "Basic " + Buffer.from(session.id + ":" + session.password).toString('base64'),
+                                        }
                                     }).then(res => {
                                         let data = res.data
                                         if (data.message === "Property created") {

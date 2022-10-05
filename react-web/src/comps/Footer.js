@@ -26,8 +26,8 @@ function Footer() {
         w={'90vw'} 
         p={'1.5rem'}
         pb={'3rem'}
-        bottom={'0px'}
-        position={'absolute'}
+        bottom={'0'}
+        position={'static'}
         right={'0px'}
         left={'0px'}
         height={'fit-content'}
