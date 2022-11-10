@@ -24,8 +24,8 @@ function Header() {
     const location = useLocation();
 
     const [isHome, setIsHome] = React.useState(false)
+    const [isAbout, setisAbout] = React.useState(false)
     const [isDocs, setIsDocs] = React.useState(false)
-    const [isApp, setIsApp] = React.useState(false)
 
     const [userName, setUserName] = React.useState('')
     const [userEmail, setUserEmail] = React.useState('')
@@ -38,15 +38,19 @@ function Header() {
         if (location.pathname === '/') {
             setIsHome(true)
             setIsDocs(false)
-            setIsApp(false)
+            setisAbout(false)
         } else if (location.pathname === '/about') {
             setIsHome(false)
-            setIsDocs(true)
-            setIsApp(false)
-        } else if (location.pathname === '/app') {
-            setIsHome(false)
             setIsDocs(false)
-            setIsApp(true)
+            setisAbout(true)
+        } else if (location.pathname === '/docs') {
+            setIsHome(false)
+            setIsDocs(true)
+            setisAbout(false)
+        } else if (location.pathname === '/home') {
+            setIsHome(true)
+            setIsDocs(false)
+            setisAbout(false)
         }
     }, [location])
 
@@ -191,7 +195,7 @@ function Header() {
 
                             {isLoggedIn ? (
                                 <Box textAlign={'left'}>
-                                    <Popover trigger='hover'>
+                                    <Popover trigger='click'>
                                         <PopoverTrigger>
                                             <Image src={userAvatar} w={'10'} h={'10'} borderRadius={50} pos={'absolute'} top={1} right={0} ml={5} />
                                         </PopoverTrigger> 
@@ -240,7 +244,7 @@ function Header() {
 
                             {isLoggedIn ? (
                                 <Box textAlign={'left'}>
-                                    <Popover trigger='hover'>
+                                    <Popover trigger='click'>
                                         <PopoverTrigger>
                                             <Image src={userAvatar} w={'10'} h={'10'} borderRadius={50} pos={'absolute'} top={1} right={0} ml={5} />
                                         </PopoverTrigger> 
@@ -267,7 +271,7 @@ function Header() {
 
                         </Box>
 
-                    ) : isApp ? (
+                    ) : isAbout ? (
 
                         <Box p={3} pr={7}>
                             <NavLink to={'/'}>
@@ -290,7 +294,7 @@ function Header() {
 
                             {isLoggedIn ? (
                                 <Box textAlign={'left'}>
-                                    <Popover trigger='hover'>
+                                    <Popover trigger='click'>
                                         <PopoverTrigger>
                                             <Image src={userAvatar} w={'10'} h={'10'} borderRadius={50} pos={'absolute'} top={1} right={0} ml={5} />
                                         </PopoverTrigger> 
@@ -341,7 +345,7 @@ function Header() {
 
                             {isLoggedIn ? (
                                 <Box textAlign={'left'}>
-                                    <Popover trigger='hover'>
+                                    <Popover trigger='click'>
                                         <PopoverTrigger>
                                             <Image src={userAvatar} w={'10'} h={'10'} borderRadius={50} pos={'absolute'} top={1} right={0} ml={5} />
                                         </PopoverTrigger> 

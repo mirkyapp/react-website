@@ -1,4 +1,4 @@
-import { Box, Button, ChakraProvider, Divider, Heading, Highlight, Image, Text } from "@chakra-ui/react";
+import { Box, Button, ChakraProvider, Divider, Heading, Image, Text } from "@chakra-ui/react";
 import Header from "../comps/Header";
 import theme from "../theme";
 
@@ -17,7 +17,7 @@ function HomePage() {
 
             <Heading 
               textAlign={'center'}
-              bgGradient='radial(#E20D8B, #6459F4,)'
+              bgGradient='linear(to-r, #E20D8B, #6459F4,)'
               bgClip='text'
               size={["2xl", "4xl"]}
               pr={['0','15']}

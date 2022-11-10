@@ -11,6 +11,9 @@ import LoginPage from './pages/LoginPage';
 import PropertiesPage from './pages/PropertiesPage';
 import AddPropertyPage from './pages/CreatePropertyPage';
 import AccountPage from './pages/AccountPage';
+import PropertyDashboardPage from './pages/PropertyDashboardPage'
+import AboutPage from './pages/AboutPage';
+import DocsPage from './pages/DocsPage';
 
 export default function App() {
     const cookies = new Cookies();
@@ -42,11 +45,16 @@ export default function App() {
             <Routes>
 
                 <Route path="/" element={<HomePage />} />
+                <Route path="/home" element={<HomePage />} />
+                <Route path="/docs" element={<DocsPage />} />
+                <Route path="/about" element={<AboutPage />} />
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/properties" element={<PropertiesPage />} />
                 <Route path="/add-property" element={<AddPropertyPage />} />
                 <Route path="/account" element={<AccountPage />} />
+                
+                <Route path="/property/:id/overview" element={<PropertyDashboardPage />} />
 
             </Routes>
         </BrowserRouter>
