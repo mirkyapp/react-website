@@ -1,9 +1,9 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 import { Buffer } from 'buffer';
-import { Box, Button, ChakraProvider, Grid, Heading, Menu, MenuButton, MenuItem, MenuList, Spinner, Stat, StatArrow, StatHelpText, StatLabel, StatNumber, Table, TableContainer, Tbody, Td, Text, Tfoot, Th, Thead, Tr } from "@chakra-ui/react";
+import { Box, Button, ChakraProvider, Code, Grid, Heading, Menu, MenuButton, MenuItem, MenuList, Spinner, Stat, StatArrow, StatHelpText, StatLabel, StatNumber, Table, TableContainer, Tbody, Td, Text, Tfoot, Th, Thead, Tr } from "@chakra-ui/react";
 import theme from "../theme";
 import { PropDashSidebar } from "../comps/PropDashSidebar";
 import {
@@ -58,30 +58,65 @@ function PropertyDashboardPage() {
     const [propId, setPropId] = React.useState(params.id);
     const [propData, setPropData] = React.useState(null);
     const [isLoading, setIsLoading] = React.useState(true);
+    const [hasAnalytics, setHasAnalytics] = React.useState(false);
     const cookies = new Cookies();
     const [session, setSession] = React.useState(cookies.get('mirky-session'));
 
-    const labels = ['12am','3am', '6am', '9am', '12pm', '3pm', '6pm', '9pm',];
-    const rtuData = {
-        labels,
+    // Define data consts
+    const [realTimeTotal, setRealTimeTotal] = React.useState('N/A');
+    const [oneDayRealTimeList, setOneDayRealTimeList] = React.useState([]);
+    const [oneDayRealTimePercent, setOneDayRealTimePercent] = React.useState('N/A');
+    const [oneDayRealTimePercentColor, setOneDayRealTimePercentColor] = React.useState('');
+
+    const [oneDayPageViewsTotal, setOneDayPageViewsTotal] = React.useState('N/A');
+    const [oneDayPageViewsList, setOneDayPageViewsList] = React.useState([]);
+    const [oneDayPageViewsPercent, setOneDayPageViewsPercent] = React.useState('N/A');
+    const [oneDayPageViewsPercentColor, setOneDayPageViewsPercentColor] = React.useState('');
+
+    const [oneDayEventsTotal, setOneDayEventsTotal] = React.useState('N/A');
+    const [oneDayEventsList, setOneDayEventsList] = React.useState([]);
+    const [oneDayEventsPercent, setOneDayEventsPercent] = React.useState('N/A');
+    const [oneDayEventsPercentColor, setOneDayEventsPercentColor] = React.useState('');
+
+    const [oneDayPageBreakdownList, setOneDayPageBreakdownList] = React.useState([]);
+
+    // Define chart range const
+    const [chartRange, setChartRange] = React.useState('Last 24 Hours');
+
+    // Define chart data labels
+    const oneDayLabels = ['12am','3am', '6am', '9am', '12pm', '3pm', '6pm', '9pm',];
+    const oneHourLabels = ["0", "5", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", "60"];
+    const oneWeekLabels = ["1", "2", "3", "4", "5", "6", "7"];
+    const oneMonthLabels = ['Week 1', "Week 2", "Week 3", "Week 4"];
+    const sixMonthLabels = ["1", "2", "3", "4", "5", "6"];
+
+    // Define chart data
+    const oneDayRealTimeData = {
+        oneDayLabels,
         datasets: [
         {
-            data: [223,202,212,290,250,220,220,230],
+            data: oneDayRealTimeList,
+            backgroundColor: '#6459F4',
+        },
+        ],
+    };
+    const oneDayPageViewsData = {
+        oneDayLabels,
+        datasets: [
+        {
+            data: oneDayPageViewsList,
             backgroundColor: '#6459F4',
         },
         ],
     };
 
-    const pvData = {
-        labels,
-        datasets: [
-        {
-            data: [9000,9590,10002,10504,10890,11005,11200,12000],
-            backgroundColor: '#6459F4',
-        },
-        ],
-    };
-
+    React.useEffect(() => {
+        if (session !== undefined) {
+            console.log('User is logged in')
+        } else {
+            window.location.href = '/login'
+        }
+    }, [session]);
 
     React.useEffect(() => {
         setPropId(params.id);
@@ -94,6 +129,9 @@ function PropertyDashboardPage() {
         })
         .then(res => {
             setPropData(res.data.property);
+            if (res.data.property.analytics) {
+                setHasAnalytics(true);
+            }
             setIsLoading(false);
         })
 
@@ -107,18 +145,16 @@ function PropertyDashboardPage() {
                 </Box>
             ) : (
                 <Box>
-                    {/* <Header /> */}
-                    <PropDashSidebar />
+                    <PropDashSidebar id={propId} />
+
                     <Box
                     ml={'5em'}
                     mt={'3em'}
                     w={'30%'}
                     >
-
-
                         <Heading 
                             textAlign={'left'}
-                            fontSize={'5xl'}
+                            fontSize={['2xl', '3xl', '4xl']}
                             fontWeight={'extrabold'}
                             
                         >
@@ -135,19 +171,51 @@ function PropertyDashboardPage() {
                         <Box h={5}/>
                         <Menu>
                         <MenuButton as={Button} rightIcon={<FaChevronDown />}>
-                            Past 24 Hours
+                            {chartRange}
                         </MenuButton>
                         <MenuList>
-                            <MenuItem>Last Hour</MenuItem>
-                            <MenuItem>Last 24 Hours</MenuItem>
-                            <MenuItem>Last 7 Days</MenuItem>
-                            <MenuItem>Last 30 Days</MenuItem>
-                            <MenuItem>Last 6 Moths</MenuItem>
+                            <MenuItem onClick={() => { setChartRange('Last Hour') }} >Last Hour</MenuItem>
+                            <MenuItem onClick={() => { setChartRange('Last 24 Hours') }} >Last 24 Hours</MenuItem>
+                            <MenuItem onClick={() => { setChartRange('Last 7 Days') }} >Last 7 Days</MenuItem>
+                            <MenuItem onClick={() => { setChartRange('Last 30 Days') }} >Last 30 Days</MenuItem>
+                            <MenuItem onClick={() => { setChartRange('Last 6 Months') }} >Last 6 Months</MenuItem>
                             
                         </MenuList>
                         </Menu>
 
                         <Box h={10} />
+                        {!hasAnalytics ? (
+                            <Box 
+                                p="5"
+                                bg="red.900"
+                                borderRadius="lg"
+                                w={'80vw'}
+                                textAlign={'center'}
+                                borderColor={'red.500'}
+                                borderWidth={2}
+                            >
+                                <Heading size="lg" mb={4} fontWeight={'extrabold'}>
+                                    🚨 No Analytics Data Recieved Yet 🚨
+                                </Heading> 
+                                <Text fontWeight={"500"} color={"red.200"}>
+                                    Please make sure you have correctly connected your application to Mirky.
+                                </Text>
+                                <Code mt={4} p={2}>
+                                    https://api.mirky.app/v1/property/prop-analytics/{propId}
+                                </Code>
+                                <Text mt={4} fontWeight={"500"} color={"red.200"}>
+                                    If you have ensured that you have connected your application to Mirky, please wait a few minutes and try again.
+                                </Text>
+                                    
+                                <NavLink to={'/docs'}>
+                                    <Button mt={4} colorScheme="red" variant={"ghost"}>
+                                        View Documentation
+                                    </Button>
+                                </NavLink>
+                            </Box>
+                        ) : (
+                            null
+                        )}
 
                         <Box dis={'flex'} w={'80vw'} p={10}>
                             <Grid templateColumns={{ base: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)', sm:'repeat(1,1fr)' }} gap={6}>
@@ -168,16 +236,16 @@ function PropertyDashboardPage() {
                                             🟢 Real-Time Users
                                         </Heading>
                                         <Stat textAlign={'right'} mt={-3}>
-                                            <StatNumber fontSize={'5xl'} fontWeight={'black'}>340</StatNumber>
+                                            <StatNumber fontSize={'5xl'} fontWeight={'black'}>{realTimeTotal}</StatNumber>
                                             <StatHelpText fontSize={'xl'}>
-                                            <StatArrow type='decrease'  />
-                                            2.36%
+                                            <StatArrow type={oneDayRealTimePercentColor}  />
+                                            {oneDayRealTimePercent}%
                                             </StatHelpText>
                                         </Stat>
 
                                         
                                     </Box>
-                                    <Bar options={options} data={rtuData} />
+                                    <Bar options={options} data={oneDayRealTimeData} />
 
                                 </Box>
 
@@ -197,16 +265,16 @@ function PropertyDashboardPage() {
                                             Page Views
                                         </Heading>
                                         <Stat textAlign={'right'} mt={-3}>
-                                            <StatNumber fontSize={'5xl'} fontWeight={'black'}>12,204</StatNumber>
+                                            <StatNumber fontSize={'5xl'} fontWeight={'black'}>{oneDayPageViewsTotal}</StatNumber>
                                             <StatHelpText fontSize={'xl'}>
-                                            <StatArrow type='increase' />
-                                            19.60%
+                                            <StatArrow type={oneDayPageViewsPercentColor} />
+                                            {oneDayPageViewsPercent}%
                                             </StatHelpText>
                                         </Stat>
 
                                         
                                     </Box>
-                                    <Bar options={options} data={pvData} />
+                                    <Bar options={options} data={oneDayPageViewsData} />
 
                                 </Box>
 
@@ -227,10 +295,10 @@ function PropertyDashboardPage() {
                                             Events
                                         </Heading>
                                         <Stat textAlign={'right'} mt={-3}>
-                                            <StatNumber fontSize={'5xl'} fontWeight={'black'}>955</StatNumber>
+                                            <StatNumber fontSize={'5xl'} fontWeight={'black'}>{oneDayEventsTotal}</StatNumber>
                                             <StatHelpText fontSize={'xl'}>
-                                            <StatArrow type='increase'  />
-                                            4.13%
+                                            <StatArrow type={oneDayEventsPercentColor}  />
+                                            {oneDayEventsPercent}%
                                             </StatHelpText>
                                         </Stat>
                                         <Box h={5} />
@@ -246,26 +314,12 @@ function PropertyDashboardPage() {
                                                 </Thead>
                                                 <Tbody >
 
-                                                    <Tr>
-                                                        <Td fontSize={'xl'}>signup</Td>
-                                                        <Td fontSize={'xl'}>391</Td>
-                                                    </Tr>
-                                                    <Tr>
-                                                        <Td fontSize={'xl'}>email-change</Td>
-                                                        <Td fontSize={'xl'}>213</Td>
-                                                    </Tr>
-                                                    <Tr>
-                                                        <Td fontSize={'xl'}>property-create</Td>
-                                                        <Td fontSize={'xl'}>129</Td>
-                                                    </Tr>
-                                                    <Tr>
-                                                        <Td fontSize={'xl'}>account-delete</Td>
-                                                        <Td fontSize={'xl'}>120</Td>
-                                                    </Tr>
-                                                    <Tr>
-                                                        <Td fontSize={'xl'}>help-request</Td>
-                                                        <Td fontSize={'xl'}>102</Td>
-                                                    </Tr>
+                                                    {oneDayEventsList.map((event) => (
+                                                        <Tr key={event.eventName}>
+                                                            <Td>{event.eventName}</Td>
+                                                            <Td>{event.triggerCount}</Td>
+                                                        </Tr>
+                                                    ))}
                                                 
                                                 </Tbody>
                                                 <Tfoot>
@@ -308,22 +362,12 @@ function PropertyDashboardPage() {
                                                 </Thead>
                                                 <Tbody >
 
-                                                    <Tr>
-                                                        <Td fontSize={'xl'}>/</Td>
-                                                        <Td fontSize={'xl'}>4,812</Td>
-                                                    </Tr>
-                                                    <Tr>
-                                                        <Td fontSize={'xl'}>/login</Td>
-                                                        <Td fontSize={'xl'}>3,231</Td>
-                                                    </Tr>
-                                                    <Tr>
-                                                        <Td fontSize={'xl'}>/signup</Td>
-                                                        <Td fontSize={'xl'}>3,112</Td>
-                                                    </Tr>
-                                                    <Tr>
-                                                        <Td fontSize={'xl'}>/about</Td>
-                                                        <Td fontSize={'xl'}>1,933</Td>
-                                                    </Tr>
+                                                    {oneDayPageViewsList.map((page) => (
+                                                        <Tr key={page.pageName}>
+                                                            <Td>{page.pageName}</Td>
+                                                            <Td>{page.viewCount}</Td>
+                                                        </Tr>
+                                                    ))}
                                                 
                                                 </Tbody>
                                                 <Tfoot>

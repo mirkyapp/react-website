@@ -14,6 +14,7 @@ import AccountPage from './pages/AccountPage';
 import PropertyDashboardPage from './pages/PropertyDashboardPage'
 import AboutPage from './pages/AboutPage';
 import DocsPage from './pages/DocsPage';
+import PropertyAdminPage from './pages/PropertyAdminPage';
 
 export default function App() {
     const cookies = new Cookies();
@@ -55,6 +56,7 @@ export default function App() {
                 <Route path="/account" element={<AccountPage />} />
                 
                 <Route path="/property/:id/overview" element={<PropertyDashboardPage />} />
+                <Route path="/property/:id/admin" element={<PropertyAdminPage />} />
 
             </Routes>
         </BrowserRouter>

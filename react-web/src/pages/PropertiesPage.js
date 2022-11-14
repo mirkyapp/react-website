@@ -61,10 +61,12 @@ function PropertiesPage() {
                     
                 <SimpleGrid minChildWidth='15rem' spacingY={5} spacingX={5} alignContent={'center'} justifyContent={'center'} alignItems={'center'}>
                     {properties.map((property) => (
+
                         <Property
                             key={property.propId}
                             id={property.propId}
                             name={property.propName} 
+                            logo={property.logo.location}
                         />
                     ))}
                     <AddProperty />

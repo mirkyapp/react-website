@@ -20,8 +20,8 @@ function HomePage() {
               bgGradient='linear(to-r, #E20D8B, #6459F4,)'
               bgClip='text'
               size={["2xl", "4xl"]}
-              pr={['0','15']}
-              pl={['0','15']}
+              pr={['0','5','15']}
+              pl={['0','5','15']}
               w={'50vw'}
               margin={'auto'}
               lineHeight={'1.2'}
@@ -140,7 +140,7 @@ function HomePage() {
             <Box 
               w={'20rem'} 
               ml={5} mr={5} mb={5} 
-              h={'15rem'} 
+              h={'fit-content'} 
               backgroundColor={'whiteAlpha.300'} 
               borderRadius={20}
               p={8}
@@ -158,7 +158,7 @@ function HomePage() {
             <Box 
               w={'20rem'} 
               ml={5} mr={5} mb={5} 
-              h={'15rem'} 
+              h={'fit-content'} 
               backgroundColor={'whiteAlpha.300'} 
               borderRadius={20}
               p={8}
@@ -176,7 +176,7 @@ function HomePage() {
             <Box 
               w={'20rem'} 
               ml={5} mr={5} mb={5} 
-              h={'15rem'} 
+              h={'fit-content'} 
               backgroundColor={'whiteAlpha.300'} 
               borderRadius={20}
               p={8}

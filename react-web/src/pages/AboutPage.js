@@ -35,7 +35,7 @@ function AboutPage() {
                         </Text>
                     </Box>
                     <Box dis={'flex'} justifyContent={'center'} alignItems={'center'} margin={'auto'} pr='10' pl='10' w={'70vw'}>
-                        <Grid templateColumns={{ base: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)', sm:'repeat(1,1fr)' }} gap={4} mt={20}>
+                        <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(3, 1fr)', sm:'repeat(1,1fr)' }} gap={4} mt={20}>
                             <ProductFeature
                                 title={"Custom Events"}
                                 text={"Create unique events, and define when they should be triggered to track less convential data such as game wins, or email changes. Integrate webhooks to notify your team when critical events occur."}

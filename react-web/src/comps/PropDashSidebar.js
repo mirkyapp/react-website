@@ -37,10 +37,12 @@ export const PropDashSidebar = props => {
 
                     <Box h={10} />
 
-                    <Box display={'flex'}flexDir={'row'} p="3" cursor="pointer" _hover={{ backgroundColor: "whiteAlpha.300", borderRadius:'13' }}>
-                        <FaHome size={'1.7em'} />
-                        <Text fontSize={'xl'} fontWeight={'bold'} ml={'0.5rem'}>Home</Text>
-                    </Box>
+                    <NavLink to={`/property/${props.id}/overview`} >
+                        <Box display={'flex'}flexDir={'row'} p="3" cursor="pointer" _hover={{ backgroundColor: "whiteAlpha.300", borderRadius:'13' }}>
+                            <FaHome size={'1.7em'} />
+                            <Text fontSize={'xl'} fontWeight={'bold'} ml={'0.5rem'}>Home</Text>
+                        </Box>
+                    </NavLink>
 
                     <Box h={2} />
 
@@ -65,10 +67,12 @@ export const PropDashSidebar = props => {
                 </Box>
 
                 <Box >
-                    <Box display={'flex'}flexDir={'row'} p="3" verticalAlign={'bottom'} cursor="pointer" _hover={{ backgroundColor: "whiteAlpha.300", borderRadius:'13' }}>
-                        <IoSettingsSharp size={'1.7em'} />
-                        <Text fontSize={'xl'} fontWeight={'bold'} ml={'0.5rem'}>Admin</Text>
-                    </Box>
+                    <NavLink to={`/property/${props.id}/admin`}>
+                        <Box display={'flex'}flexDir={'row'} p="3" verticalAlign={'bottom'} cursor="pointer" _hover={{ backgroundColor: "whiteAlpha.300", borderRadius:'13' }}>
+                            <IoSettingsSharp size={'1.7em'} />
+                            <Text fontSize={'xl'} fontWeight={'bold'} ml={'0.5rem'}>Admin</Text>
+                        </Box>
+                    </NavLink>
                     <NavLink to="/properties">
                         <Box display={'flex'}flexDir={'row'} p="3" verticalAlign={'bottom'} cursor="pointer" _hover={{ backgroundColor: "whiteAlpha.300", borderRadius:'13' }}>
                             <IoMdArrowRoundBack size={'1.7em'} />
@@ -91,9 +95,11 @@ export const PropDashSidebar = props => {
                 top={'0'}
             >   <Box h="90%">
                     <Box h={5} />
-                    <GiHamburgerMenu size={'1.7em'} onClick={() => { setIsCollapsed(false) }} cursor="pointer" _hover={{ backgroundColor: "whiteAlpha.300", borderRadius:'13' }} />
+                    <GiHamburgerMenu size={'1.7em'} onClick={() => { setIsCollapsed(false) }} cursor="pointer" />
                     <Box h={10} />
-                    <FaHome size={'1.7em'} cursor="pointer" _hover={{ backgroundColor: "whiteAlpha.300", borderRadius:'13' }} />
+                    <NavLink to={`/property/${props.id}/overview`} >
+                        <FaHome size={'1.7em'} cursor="pointer" _hover={{ backgroundColor: "whiteAlpha.300", borderRadius:'13' }} />
+                    </NavLink>
                     <Box h={10} />
                     <HiDocumentReport size={'1.7em'} cursor="pointer" _hover={{ backgroundColor: "whiteAlpha.300", borderRadius:'13' }} />
                     <Box h={10} />
@@ -102,7 +108,9 @@ export const PropDashSidebar = props => {
                     <HiOutlineStatusOnline size={'1.7em'} cursor="pointer" _hover={{ backgroundColor: "whiteAlpha.300", borderRadius:'13' }} />
                 </Box>
                 <Box >
-                    <IoSettingsSharp size={'1.7em'} cursor="pointer" _hover={{ backgroundColor: "whiteAlpha.300", borderRadius:'13' }} />
+                    <NavLink to={`/property/${props.id}/admin`}>
+                        <IoSettingsSharp size={'1.7em'} cursor="pointer" _hover={{ backgroundColor: "whiteAlpha.300", borderRadius:'13' }} />
+                    </NavLink>
                     <Box h={4} />
                     <NavLink to="/properties">
                         <IoMdArrowRoundBack size={'1.7em'} cursor="pointer" _hover={{ backgroundColor: "whiteAlpha.300", borderRadius:'13' }} />

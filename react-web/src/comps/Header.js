@@ -8,6 +8,7 @@ import { GiHamburger, GiHamburgerMenu } from 'react-icons/gi';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
 import { Buffer } from 'buffer';
+import { FaCode, FaHome, FaUserTie } from 'react-icons/fa';
 
 
 function Header() {
@@ -130,6 +131,32 @@ function Header() {
             >   
 
                 <Show breakpoint='(max-width: 750px)'>
+                    {isLoggedIn ? (
+                        <Box textAlign={'left'} >
+                            <Popover trigger='click'>
+                                <PopoverTrigger>
+                                    <Image src={userAvatar} w={'10'} h={'10'} borderRadius={50} pos={'absolute'} top={1} right={16} />
+                                </PopoverTrigger> 
+                                <PopoverContent width={'fit-content'} p={2} fontSize={'2xl'} >
+                                    <PopoverArrow />
+                                    <PopoverHeader fontWeight={'extrabold'} >{userName}</PopoverHeader>
+                                    <PopoverBody>
+                                        <Link href={'/properties'}>Dashboard</Link>
+                                        <Box w={6} h={3} />
+                                        <Link href={'/account'}>Account</Link>
+                                        <Box w={6} h={10} />
+                                        <Link href={'/account/logout'} backgroundColor={'red.300'} color={'red.900'} p={2} borderRadius={5}>Logout</Link>
+                                    </PopoverBody>
+                                </PopoverContent>
+                            </Popover>
+                        </Box>
+                    ) : (
+                        <NavLink to={'/login'}>
+                            <Link ml={5} p={3} color={'white'} mr={2} borderRadius={10} bgColor={'brandBlurple.500'} fontWeight={800} _hover={{backgroundColor: "brandBlurple.700"}}>
+                                Login
+                            </Link>
+                        </NavLink>
+                    )}
                 <IconButton
                     onClick={() => handleClick(size)}
                     key={size}
@@ -137,38 +164,49 @@ function Header() {
                     backgroundColor={'rgba(180, 180, 180, 0.2)'}
                     icon={<GiHamburgerMenu />} 
                     mt={1}
-                    ></IconButton>
+                />
 
-                <Drawer bgColor={'#010715'} onClose={onClose} isOpen={isOpen} size={'xs'}>
+                <Drawer bgColor={'#010715'} onClose={onClose} isOpen={isOpen} size={'xs'} >
                     <DrawerOverlay  />
                     <DrawerContent>
                     <DrawerCloseButton />
-                    <DrawerHeader  bgColor={'#010715'} fontSize={50} fontWeight={700}>Menu</DrawerHeader>
                     <DrawerBody bgColor={'#010715'}>
-                        <NavLink to={'/'}>
-                            <Link fontSize={30} fontWeight={700}>
-                                Home
-                            </Link>
-                        </NavLink>
+                        <Box h={20} />
 
-                        <Box w={10} />
+                        <Box display={'flex'} flexDir={'row'} alignItems={'center'} >
+                            <FaHome size={'1.5em'} />
+                            <NavLink to={'/'}>
+                                <Link fontSize={30} fontWeight={700} ml={2}>
+                                    Home
+                                </Link>
+                            </NavLink>
+                        </Box>
 
-                        {/* <NavLink to={'/about'}>
-                            <Link fontSize={30} fontWeight={700}>
-                                About
-                            </Link>
-                        </NavLink>
+                        <Box w={15} />
 
-                        <Box w={10} />
+                        <Box display={'flex'} flexDir={'row'} alignItems={'center'} >
+                            <FaCode size={'1.5em'} />
+                            <NavLink to={'/docs'}>
+                                <Link fontSize={30} fontWeight={700} ml={2}>
+                                    Docs
+                                </Link>
+                            </NavLink>
+                        </Box>
 
-                        <NavLink to={'/app'}>
-                            <Link fontSize={30} fontWeight={700}>
-                                App
-                            </Link>
-                        </NavLink> */}
+                        <Box w={15} />
+
+                        <Box display={'flex'} flexDir={'row'} alignItems={'center'} >
+                            <FaUserTie size={'1.5em'} />
+                            <NavLink to={'/about'}>
+                                <Link fontSize={30} fontWeight={700} ml={2}>
+                                    Why Mirky?
+                                </Link>
+                            </NavLink>
+                        </Box>
                     </DrawerBody>
                     </DrawerContent>
                 </Drawer>
+                
                 </Show>
                 
                 <Hide breakpoint='(max-width: 750px)'>

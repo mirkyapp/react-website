@@ -1,15 +1,12 @@
-import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button, ButtonGroup, ChakraProvider, Checkbox, Divider, Editable, EditableInput, EditablePreview, Flex, FormControl, Heading, Highlight, HStack, IconButton, Image, Input, InputGroup, InputRightAddon, InputRightElement, Link, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Popover, PopoverArrow, PopoverCloseButton, PopoverContent, PopoverTrigger, SimpleGrid, Spinner, Stack, Text, useDisclosure, useEditableControls, useToast } from "@chakra-ui/react";
+import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button, ButtonGroup, ChakraProvider, Divider, Editable, EditableInput, EditablePreview, Flex, FormControl, Heading, HStack, IconButton, Image, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, useDisclosure, useEditableControls, useToast } from "@chakra-ui/react";
 import theme from "../theme";
 import { CheckIcon, CloseIcon, EditIcon } from '@chakra-ui/icons'
 import React from "react";
 import axios from 'axios';
 import Cookies from 'universal-cookie';
-import { NavLink } from "react-router-dom";
 import Header from "../comps/Header";
 import Footer from "../comps/Footer";
 import { Buffer } from 'buffer';
-import  FocusLock from "react-focus-lock"
-import { Formik, Form, Field } from 'formik'; 
 
 function AccountPage() {
     /* Here's a custom control */
@@ -34,8 +31,7 @@ function AccountPage() {
     }
 
     const cookies = new Cookies();
-    const [session, setSession] = React.useState(cookies.get('mirky-session'));
-    const [properties, setProperties] = React.useState([]);
+    const [session] = React.useState(cookies.get('mirky-session'));
     const toast = useToast()
     const pfpModal = useDisclosure()
     const deleteAlert = useDisclosure()

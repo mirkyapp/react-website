@@ -17,7 +17,7 @@ export const Property = props => {
             alignItems={'center'}
             textAlign={'center'}
             display={'flex'}
-            bgImage={props.image || logo}
+            bgImage={props.logo}
             bgSize={'cover'}
             bgPosition={'center'}
             bgClip={'border-box'}
