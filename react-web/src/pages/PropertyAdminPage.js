@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, ChakraProvider, Divider, Editable, EditableInput, EditablePreview, Flex, FormControl, FormLabel, Grid, Heading, HStack, IconButton, Image, Input, InputLeftAddon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, Switch, Text, useDisclosure, useEditableControls, useToast } from "@chakra-ui/react"
+import { Box, Button, ButtonGroup, ChakraProvider, Code, Divider, Editable, EditableInput, EditablePreview, Flex, FormControl, FormLabel, Grid, Heading, HStack, IconButton, Image, Input, InputLeftAddon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, Switch, Text, useDisclosure, useEditableControls, useToast } from "@chakra-ui/react"
 import Footer from "../comps/Footer";
 import theme from "../theme"
 import { NavLink, useParams } from "react-router-dom";
@@ -21,9 +21,13 @@ function PropertyAdminPage() {
     const [propData, setPropData] = React.useState()
 
     const pfpModal = useDisclosure()
+    const createEvent = useDisclosure()
     const [selectedFile, setSelectedFile] = React.useState(null);
 	const [isFilePicked, setIsFilePicked] = React.useState(false);
     const [isFileLoading, setIsFileLoading] = React.useState(false)
+
+    const [defaultEventsList, setDefaultEventsList] = React.useState([])
+    const [customEventsList, setCustomEventsList] = React.useState([])
 
     /* Here's a custom control */
     function EditableControls(props) {
@@ -66,7 +70,11 @@ function PropertyAdminPage() {
         })
         .then(res => {
             setPropData(res.data.property);
-            setIsLoading(false);
+
+            // Set preset events
+            setDefaultEventsList(res.data.property.analytics.presetEvents)
+
+            setIsLoading(false)
         })
 
     }, [session, propId]);
@@ -233,6 +241,11 @@ function PropertyAdminPage() {
                         >
                             {propData.propName}
                         </Text>
+
+                        <Code
+                        >
+                            ID: {propData.propId}
+                        </Code>
                         <Box h={10} />
 
                         <Box dis={'flex'} w={'80vw'} p={10}>
@@ -374,45 +387,55 @@ function PropertyAdminPage() {
                                         <Heading fontSize={'2xl'}> Default Events </Heading>
                                         <Box h={2} />
 
-                                        <HStack mb={2}>
-                                            <FormControl display='flex' alignItems='center'>
-                                                <FormLabel htmlFor='email-alerts' mb='0'>
-                                                    Event Name
-                                                </FormLabel>
-                                                <Switch colorScheme={'brandBlurple'} id='event-id' />
-                                            </FormControl>
-                                        </HStack>
-                                        <HStack mb={2}>
-                                            <FormControl display='flex' alignItems='center'>
-                                                <FormLabel htmlFor='email-alerts' mb='0'>
-                                                    Event Name
-                                                </FormLabel>
-                                                <Switch colorScheme={'brandBlurple'} id='event-id' />
-                                            </FormControl>
-                                        </HStack>
-                                        <HStack mb={2}>
-                                            <FormControl display='flex' alignItems='center'>
-                                                <FormLabel htmlFor='email-alerts' mb='0'>
-                                                    Event Name
-                                                </FormLabel>
-                                                <Switch colorScheme={'brandBlurple'} id='event-id' />
-                                            </FormControl>
-                                        </HStack>
-                                        
+                                        {defaultEventsList.map((event, index) => (
+                                            <HStack mb={2}>
+                                                <FormControl display='flex' alignItems='center'>
+                                                    <FormLabel htmlFor={`event-${index}`} mb='0'>
+                                                        {event.eId}
+                                                    </FormLabel>
+                                                    <Switch isChecked={event.active} colorScheme={'brandBlurple'} id={`event-${index}`} />
+                                                </FormControl>
+                                            </HStack>
+                                        ))}
+
+                                    
                                         <Box h={5} />
                                         <Heading fontSize={'2xl'}> Custom Events </Heading>
                                         <Box h={2} />
 
-                                        <HStack mb={2}>
-                                            <FormControl display='flex' alignItems='center'>
-                                                <FormLabel htmlFor='email-alerts' mb='0'>
-                                                    Event Name
-                                                </FormLabel>
-                                                <Switch colorScheme={'brandBlurple'} id='event-id' />
-                                            </FormControl>
-                                        </HStack>
+                                        {customEventsList.map((event, index) => (
+                                            <HStack mb={2}>
+                                                <FormControl display='flex' alignItems='center'>
+                                                    <FormLabel htmlFor={`event-${index}`} mb='0'>
+                                                        {event.eId}
+                                                    </FormLabel>
+                                                    <Switch isChecked={event.active} colorScheme={'brandBlurple'} id={`event-${index}`} />
+                                                </FormControl>
+                                            </HStack>
+                                        ))}
+                                        <Button colorScheme={'brandBlurple'} onClick={createEvent.onOpen}>Create Event</Button>
 
-                                        <Button colorScheme={'brandBlurple'}>Create Event</Button>
+                                        <Modal onClose={createEvent.onClose} isOpen={createEvent.isOpen} isCentered >
+                                                <ModalOverlay />
+                                                <ModalContent>
+                                                    <ModalHeader>Create Custom Event</ModalHeader>
+                                                    <ModalCloseButton />
+                                                    <ModalBody>
+                                                        <FormControl>
+                                                            <FormLabel htmlFor="create-event-name" >Event Name</FormLabel>
+                                                            <Input id="create-event-name" isRequired placeholder="Event Name" />
+                                                            <Box h={5}></Box>
+                                                            <FormLabel>Description</FormLabel>
+                                                            <Input placeholder="Description" />
+                                                        </FormControl>
+                                                    </ModalBody>
+                                                    <ModalFooter>
+                                                        <Button onClick={createEvent.onClose}>Close</Button>
+                                                        <Box w={5}></Box>
+                                                        <Button colorScheme={'brandBlurple'}>Create</Button>
+                                                    </ModalFooter>
+                                                </ModalContent>
+                                        </Modal>
 
                                     </Box>
                                 </Box>
