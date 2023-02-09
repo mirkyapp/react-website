@@ -9,12 +9,11 @@ import { NavLink } from "react-router-dom";
 function HomePage() {
   return (
     <ChakraProvider theme={theme}>
-      <Box>
+      <Box overflowX={'hidden'} >
         <Header />
         <Box>
 
-          <Box h={'70%'} w={'100vw'} p={'50'}>
-
+          <Box h={'70%'} w={'100vw'} p={'50'} >
             <Heading 
               textAlign={'center'}
               bgGradient='linear(to-r, #E20D8B, #6459F4,)'

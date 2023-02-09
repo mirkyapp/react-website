@@ -50,6 +50,7 @@ function PropertiesPage() {
             pb={'5vw'}
             pt={'10'}
             textAlign={'center'}
+            h={'100%'}
         >
             <Heading
                 fontSize={'6xl'}
