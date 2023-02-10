@@ -15,7 +15,7 @@
     "faker": "^6.6.6",
     "formik": "^2.2.9",
     "framer-motion": "^6.5.1",
-    "mirky": "^1.0.22",
+    "mirky": "^1.0.29",
     "npm": "^8.19.2",
     "react": "^18.2.0",
     "react-chartjs-2": "^4.3.1",

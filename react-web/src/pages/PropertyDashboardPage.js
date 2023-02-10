@@ -106,163 +106,165 @@ function PropertyDashboardPage() {
         const sixMonthLabels = ["1", "2", "3", "4", "5", "6"];
 
         setPropId(params.id);
+        
+        if (propData == null) {
+            axios.get(`https://api.mirky.app/v1/property/fetch-prop/${propId}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": "Basic " + Buffer.from(session.id + ":" + session.password).toString('base64'),
+                },
+            })
+            .then(res => {
+                setPropData(res.data.property);
+                if (res.data.property.analytics.presetEvents[0].counts[0] !== undefined) {
+                    setHasAnalytics(true);
+                    setAnalytics(res.data.property.analytics);
 
-        axios.get(`https://api.mirky.app/v1/property/fetch-prop/${propId}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                "Authorization": "Basic " + Buffer.from(session.id + ":" + session.password).toString('base64'),
-            },
-        })
-        .then(res => {
-            setPropData(res.data.property);
-            if (res.data.property.analytics.presetEvents[0].counts[0] !== undefined) {
-                setHasAnalytics(true);
-                setAnalytics(res.data.property.analytics);
+                    // Set all the analytics data
+                    // One Day
+                    if (chartRange === 'Last 24 Hours') {
 
-                // Set all the analytics data
-                // One Day
-                if (chartRange === 'Last 24 Hours') {
+                        // Set One Day Page View Data and page breakdown
+                        let oneDayPageViewsTotal = 0;
+                        let oneDayPageViewsListTemp = [0,0,0,0,0,0,0];
+                        let pageBreakdownTemp = [];
 
-                    // Set One Day Page View Data and page breakdown
-                    let oneDayPageViewsTotal = 0;
-                    let oneDayPageViewsListTemp = [0,0,0,0,0,0,0];
-                    let pageBreakdownTemp = [];
-
-                    res.data.property.analytics.presetEvents[0].counts.forEach((item) => {
-                        if (item.timestamp >= (Date.now() - 86400000)) {
-                            oneDayPageViewsTotal += item.value;
-                            // Create a new date object from the timestamp
-                            let date = new Date(item.timestamp);
-                            // Get the hour of the day from the date object
-                            let hour = date.getHours();
-                            let hourA = 0
-                            let hourB = 3
-                            // Make a for loop that repeats 8 times
-                            for (let i = 0; i < 8; i++) {
-                                if (hour >= hourA && hour < hourB) {
-                                    oneDayPageViewsListTemp[i] += item.value;
+                        res.data.property.analytics.presetEvents[0].counts.forEach((item) => {
+                            if (item.timestamp >= (Date.now() - 86400000)) {
+                                oneDayPageViewsTotal += item.value;
+                                // Create a new date object from the timestamp
+                                let date = new Date(item.timestamp);
+                                // Get the hour of the day from the date object
+                                let hour = date.getHours();
+                                let hourA = 0
+                                let hourB = 3
+                                // Make a for loop that repeats 8 times
+                                for (let i = 0; i < 8; i++) {
+                                    if (hour >= hourA && hour < hourB) {
+                                        oneDayPageViewsListTemp[i] += item.value;
+                                    }
+                                    hourA += 3
+                                    hourB += 3
                                 }
-                                hourA += 3
-                                hourB += 3
                             }
-                        }
 
-                        // Set the page breakdown list
-                        let pageBreakdownItem = {
-                            name: item.page,
-                            views: item.value,
-                        }
-                        // Check if the item is already in the list
-                        let itemExists = false;
-                        pageBreakdownTemp.forEach((pageBreakdownItem) => {
-                            if (pageBreakdownItem.name === item.page) {
-                                itemExists = true;
-                                pageBreakdownItem.views += item.value;
+                            // Set the page breakdown list
+                            let pageBreakdownItem = {
+                                name: item.page,
+                                views: item.value,
+                            }
+                            // Check if the item is already in the list
+                            let itemExists = false;
+                            pageBreakdownTemp.forEach((pageBreakdownItem) => {
+                                if (pageBreakdownItem.name === item.page) {
+                                    itemExists = true;
+                                    pageBreakdownItem.views += item.value;
+                                }
+                            });
+                            if (!itemExists) {
+                                pageBreakdownTemp.push(pageBreakdownItem);
                             }
                         });
-                        if (!itemExists) {
-                            pageBreakdownTemp.push(pageBreakdownItem);
-                        }
-                    });
-                    // Sort the page breakdown array by page views high to low
-                    pageBreakdownTemp.sort((a, b) => (a.views < b.views) ? 1 : -1);
+                        // Sort the page breakdown array by page views high to low
+                        pageBreakdownTemp.sort((a, b) => (a.views < b.views) ? 1 : -1);
 
-                    // Calculate the percent change
-                    let oneDayPageViewsPercent = 0;
-                    let oneDayPageViewsPercentColor = '';
-                    if (oneDayPageViewsListTemp[0] !== 0) {
-                        oneDayPageViewsPercent = ((oneDayPageViewsListTemp[7] - oneDayPageViewsListTemp[0]) / oneDayPageViewsListTemp[0]) * 100;
-                        if (oneDayPageViewsPercent > 0) {
-                            oneDayPageViewsPercentColor = 'green';
-                        } else if (oneDayPageViewsPercent < 0) {
-                            oneDayPageViewsPercentColor = 'red';
-                        }
-                    }
-
-                    // Set ond day page view data
-                    setOneDayPageViewsTotal(oneDayPageViewsTotal);
-                    setOneDayPageViewsList(oneDayPageViewsListTemp);
-                    setOneDayPageViewsPercent(oneDayPageViewsPercent);
-                    setOneDayPageViewsPercentColor(oneDayPageViewsPercentColor);
-                    setOneDayPageBreakdownList(pageBreakdownTemp);
-
-                    // Process one day real time view data
-                    let realTimeTotal = 0;
-                    let realTimeListTemp = [0,0,0,0,0,0,0];
-                    res.data.property.analytics.presetEvents[1].counts.forEach((item) => {
-                        if (item.timestamp >= (Date.now() - 86400000)) {
-                            realTimeTotal += item.value;
-                            // Create a new date object from the timestamp
-                            let date = new Date(item.timestamp);
-                            // Get the hour of the day from the date object
-                            let hour = date.getHours();
-                            let hourA = 0
-                            let hourB = 3
-                            // Make a for loop that repeats 8 times
-                            for (let i = 0; i < 8; i++) {
-                                if (hour >= hourA && hour < hourB) {
-                                    realTimeListTemp[i] += item.value;
-                                }
-                                hourA += 3
-                                hourB += 3
+                        // Calculate the percent change
+                        let oneDayPageViewsPercent = 0;
+                        let oneDayPageViewsPercentColor = '';
+                        if (oneDayPageViewsListTemp[0] !== 0) {
+                            oneDayPageViewsPercent = ((oneDayPageViewsListTemp[7] - oneDayPageViewsListTemp[0]) / oneDayPageViewsListTemp[0]) * 100;
+                            if (oneDayPageViewsPercent > 0) {
+                                oneDayPageViewsPercentColor = 'green';
+                            } else if (oneDayPageViewsPercent < 0) {
+                                oneDayPageViewsPercentColor = 'red';
                             }
                         }
-                    });
 
-                    // Next caculate the percentage change, and determine the color (increase or decrease)
-                    let realTimePercent = 0;
-                    let realTimePercentColor = '';
-                    if (realTimeTotal > 0) {
-                        realTimePercent = Math.round(((realTimeTotal - realTimeListTemp[0]) / realTimeListTemp[0]) * 100);
-                        // If the percentage is greater than 100, set it to 100
-                        if (realTimePercent > 100) {
-                            realTimePercent = 100;
+                        // Set ond day page view data
+                        setOneDayPageViewsTotal(oneDayPageViewsTotal);
+                        setOneDayPageViewsList(oneDayPageViewsListTemp);
+                        setOneDayPageViewsPercent(oneDayPageViewsPercent);
+                        setOneDayPageViewsPercentColor(oneDayPageViewsPercentColor);
+                        setOneDayPageBreakdownList(pageBreakdownTemp);
+
+                        // Process one day real time view data
+                        let realTimeTotal = 0;
+                        let realTimeListTemp = [0,0,0,0,0,0,0];
+                        res.data.property.analytics.presetEvents[1].counts.forEach((item) => {
+                            if (item.timestamp >= (Date.now() - 86400000)) {
+                                realTimeTotal += item.value;
+                                // Create a new date object from the timestamp
+                                let date = new Date(item.timestamp);
+                                // Get the hour of the day from the date object
+                                let hour = date.getHours();
+                                let hourA = 0
+                                let hourB = 3
+                                // Make a for loop that repeats 8 times
+                                for (let i = 0; i < 8; i++) {
+                                    if (hour >= hourA && hour < hourB) {
+                                        realTimeListTemp[i] += item.value;
+                                    }
+                                    hourA += 3
+                                    hourB += 3
+                                }
+                            }
+                        });
+
+                        // Next caculate the percentage change, and determine the color (increase or decrease)
+                        let realTimePercent = 0;
+                        let realTimePercentColor = '';
+                        if (realTimeTotal > 0) {
+                            realTimePercent = Math.round(((realTimeTotal - realTimeListTemp[0]) / realTimeListTemp[0]) * 100);
+                            // If the percentage is greater than 100, set it to 100
+                            if (realTimePercent > 100) {
+                                realTimePercent = 100;
+                            }
+                            if (realTimePercent > 0) {
+                                realTimePercentColor = 'increase';
+                            } else {
+                                realTimePercentColor = 'decrease';
+                            }
                         }
-                        if (realTimePercent > 0) {
-                            realTimePercentColor = 'increase';
-                        } else {
-                            realTimePercentColor = 'decrease';
-                        }
+
+                        // Set ond day page view data
+                        setRealTimeTotal(realTimeTotal);
+                        setOneDayRealTimeList(realTimeListTemp);
+                        setOneDayRealTimePercent(realTimePercent);
+                        setOneDayRealTimePercentColor(realTimePercentColor);
+
+                        // Define chart data
+                        const oneDayRealTimeData = {
+                            labels: oneDayLabels,
+                            datasets: [
+                            {
+                                data: oneDayRealTimeList || [0,0,0,0,0,0,0],
+                                backgroundColor: '#6459F4',
+                            },
+                            ],
+                        };
+                        const oneDayPageViewsData = {
+                            labels: oneDayLabels,
+                            datasets: [
+                            {
+                                data: oneDayPageViewsList || [0,0,0,0,0,0,0],
+                                backgroundColor: '#6459F4',
+                            },
+                            ],
+                        };
+
+                        // Set chart data
+                        setOneDayRealTimeDataGlobal(oneDayRealTimeData);
+                        setOneDayPageViewDataGlobal(oneDayPageViewsData);
                     }
 
-                    // Set ond day page view data
-                    setRealTimeTotal(realTimeTotal);
-                    setOneDayRealTimeList(realTimeListTemp);
-                    setOneDayRealTimePercent(realTimePercent);
-                    setOneDayRealTimePercentColor(realTimePercentColor);
-
-                    // Define chart data
-                    const oneDayRealTimeData = {
-                        labels: oneDayLabels,
-                        datasets: [
-                        {
-                            data: oneDayRealTimeList || [0,0,0,0,0,0,0],
-                            backgroundColor: '#6459F4',
-                        },
-                        ],
-                    };
-                    const oneDayPageViewsData = {
-                        labels: oneDayLabels,
-                        datasets: [
-                        {
-                            data: oneDayPageViewsList || [0,0,0,0,0,0,0],
-                            backgroundColor: '#6459F4',
-                        },
-                        ],
-                    };
-
-                    // Set chart data
-                    setOneDayRealTimeDataGlobal(oneDayRealTimeData);
-                    setOneDayPageViewDataGlobal(oneDayPageViewsData);
+                } else {
+                    setHasAnalytics(false);
                 }
+                setIsLoading(false);
+            })
+        }
 
-            } else {
-                setHasAnalytics(false);
-            }
-            setIsLoading(false);
-        })
-
-    }, [params.id,oneDayEventsList,oneDayPageViewsList,oneDayRealTimeList,propId,session,chartRange]);
+    }, [params.id,oneDayEventsList,oneDayPageViewsList,oneDayRealTimeList,propId,session,chartRange, oneDayRealTimeDataGlobal, oneDayPageViewDataGlobal,propData]);
 
     return (
         <ChakraProvider theme={theme}>
