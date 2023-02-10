@@ -62,7 +62,7 @@ function PropertyAdminPage() {
     // Query Property Data
     React.useEffect(() => {
 
-        axios.get(`https://api.mirky.app/v1//property/fetch-prop/${propId}`, {
+        axios.get(`https://api.mirky.app/v1/property/fetch-prop/${propId}`, {
             headers: {
                 'Content-Type': 'application/json',
                 "Authorization": "Basic " + Buffer.from(session.id + ":" + session.password).toString('base64'),
